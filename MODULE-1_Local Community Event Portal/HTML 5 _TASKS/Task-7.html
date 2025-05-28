@@ -1,0 +1,10 @@
+<video id="eventVideo" controls oncanplay="document.getElementById('videoMsg').textContent='Video ready to play'">
+    <source src="promo.mp4" type="video/mp4">
+</video>
+<p id="videoMsg"></p>
+
+<script>
+    window.onbeforeunload = function () {
+        return "Are you sure you want to leave? Form is not submitted.";
+    };
+</script>

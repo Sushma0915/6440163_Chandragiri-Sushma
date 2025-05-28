@@ -1,0 +1,73 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class StudentDAO {
+    private static final String URL = "jdbc:sqlite:students.db"; // Use your DB URL
+    // For MySQL example:
+    // private static final String URL = "jdbc:mysql://localhost:3306/your_db";
+    // private static final String USER = "root";
+    // private static final String PASSWORD = "your_password";
+
+    private Connection connect() throws SQLException {
+        // For SQLite, no user/password needed:
+        return DriverManager.getConnection(URL);
+
+        // For MySQL:
+        // return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+
+    // Insert a new student record
+    public void insertStudent(String name, int age) {
+        String sql = "INSERT INTO students(name, age) VALUES (?, ?)";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, name);
+            pstmt.setInt(2, age);
+
+            int affectedRows = pstmt.executeUpdate();
+            System.out.println("Inserted " + affectedRows + " row(s).");
+
+        } catch (SQLException e) {
+            System.out.println("Insert failed.");
+            e.printStackTrace();
+        }
+    }
+
+    // Update student age by ID
+    public void updateStudentAge(int id, int newAge) {
+        String sql = "UPDATE students SET age = ? WHERE id = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, newAge);
+            pstmt.setInt(2, id);
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Updated student with ID " + id);
+            } else {
+                System.out.println("No student found with ID " + id);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Update failed.");
+            e.printStackTrace();
+        }
+    }
+
+    // For testing
+    public static void main(String[] args) {
+        StudentDAO dao = new StudentDAO();
+
+        // Insert new student
+        dao.insertStudent("David", 21);
+
+        // Update student age
+        dao.updateStudentAge(1, 23);
+    }
+}

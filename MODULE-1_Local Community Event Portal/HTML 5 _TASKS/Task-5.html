@@ -1,0 +1,16 @@
+<form onsubmit="document.getElementById('confirmation').value = 'Registration submitted!'; return false;">
+    <input type="text" name="name" placeholder="Full Name" required autofocus><br>
+    <input type="email" name="email" placeholder="Email" required><br>
+    <input type="date" name="date" required><br>
+
+    <select name="eventType" required>
+        <option value="">Select Event Type</option>
+        <option value="Music">Music</option>
+        <option value="Art">Art</option>
+    </select><br>
+
+    <textarea placeholder="Message"></textarea><br>
+    <input type="submit" value="Register"><br>
+
+    <output id="confirmation"></output>
+</form>
